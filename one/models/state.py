@@ -1,12 +1,10 @@
 #!/usr/bin/python3
-"""Review Module"""
+"""State Module"""
 from models.base_model import BaseModel
 
 
-class Review(BaseModel):
+class State(BaseModel):
     """
     All attrbutes should be empty
     """
-    place_id = ""
-    user_id = ""
-    text = ""
+    name = ""

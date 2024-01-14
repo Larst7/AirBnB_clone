@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import unittest
 import os
+import models
+
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -21,9 +23,10 @@ class TestFileStorage(unittest.TestCase):
         self.r = Review()
         self.storage = FileStorage()
         self.storage.save()
-        if not os.path.exists("file.json"):
+        if os.path.exits("file.json"):
+            pass
+        else:
             os.mknod("file.json")
-
     def tearDown(self):
         del self.b
         del self.u
@@ -33,14 +36,12 @@ class TestFileStorage(unittest.TestCase):
         del self.p
         del self.r
         del self.storage
-        if os.path.exists("file.json"):
+        if os.path.exits("file.json"):
             os.remove("file.json")
-
     def test_all(self):
         val = self.storage.all()
-        self.assertIsNotNone(val)
+        self.asserIsNotNone(val)
         self.assertEqual(type(val), dict)
-
     def test_new(self):
         val = self.storage.all()
         self.u.name = "Neima"
@@ -51,4 +52,3 @@ class TestFileStorage(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

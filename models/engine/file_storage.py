@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Define class FileStorage Module
+    Define class FileStorage Module
 """
 import json
 import models
@@ -8,14 +8,14 @@ import models
 
 class FileStorage:
     """
-    Serializes instances to JSON file and deserializes to JSON file.
+        Serializes instances to JSON file and deserializes to JSON file.
     """
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
         """
-        Return the dictionary
+            Return the dictionary
         """
         return self.__objects
 
@@ -23,22 +23,26 @@ class FileStorage:
         """
         Set new obj into __objects
         """
-        key = f"{obj.__class__.__name__}.{obj.id}"
-        value_dict = obj.to_dict()
+        key = str(obj.__class__.__name__) + "." + str(obj.id)
+        value_dict = obj
         FileStorage.__objects[key] = value_dict
 
     def save(self):
         """
         Serializes the objects into JSON file
         """
-        objects_dict = {key: val for key, val in FileStorage.__objects.items()}
+        objects_dict = {}
+        for key, val in FileStorage.__objects.items():
+            objects_dict[key] = val.to_dict()
+
         with open(FileStorage.__file_path, mode='w', encoding="UTF8") as fd:
-            json.dump(objects_dict, fd, default=lambda o: o.__dict__)
+            json.dump(objects_dict, fd)
 
     def reload(self):
         """
         Reload the file and deserializes JSON into __objects
         """
+
         try:
             with open(FileStorage.__file_path, encoding="UTF8") as fd:
                 FileStorage.__objects = json.load(fd)
@@ -48,6 +52,3 @@ class FileStorage:
                 FileStorage.__objects[key] = class_name(**val)
         except FileNotFoundError:
             pass
-        except json.JSONDecodeError as e:
-            print(f"Error decoding JSON file: {e}")
-

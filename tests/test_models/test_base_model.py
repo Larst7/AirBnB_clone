@@ -1,142 +1,35 @@
 #!/usr/bin/python3
-
 """
-All the tests for the base_model are implemented here.
+    tests for the state
 """
-
 import unittest
 from models.base_model import BaseModel
-from io import StringIO
-import sys
-import datetime
+from models.state import State
 
 
-class TestBase(unittest.TestCase):
+class TestState(unittest.TestCase):
     """
-    Testing the base class model.
+        Test the State class.
     """
 
-    def setUp(self):
+    def test_State_inheritence(self):
         """
-        Initializing instance.
+            Test that State class inherits from BaseModel.
         """
-        self.my_model = BaseModel()
-        self.my_model.name = "Binita Rai"
+        new_state = State()
+        self.assertIsInstance(new_state, BaseModel)
 
-    def tearDown(self):
+    def test_State_attributes(self):
         """
-        Removing instance.
+            Test that State class contains the attribute `name`.
         """
-        del self.my_model
+        new_state = State()
+        self.assertTrue("name" in new_state.__dir__())
 
-    def test_id_type(self):
+    def test_State_attributes_type(self):
         """
-        Checks that the type of the id is string.
+            Test that State class attribute name is class type str.
         """
-        self.assertEqual("<class 'str'>", str(type(self.my_model.id)))
-
-    def test_ids_differ(self):
-        """
-        Checks that the ids between two instances are different.
-        """
-        new_model = BaseModel()
-        self.assertNotEqual(new_model.id, self.my_model.id)
-
-    def test_name(self):
-        """
-        Checks that an attribute can be added.
-        """
-        self.assertEqual("Binita Rai", self.my_model.name)
-
-    def test_a_updated_created_equal(self):
-        """
-        Checks that both dates are equal.
-        """
-        self.assertEqual(self.my_model.updated_at.year,
-                         self.my_model.created_at.year)
-
-    def test_save(self):
-        """
-        Checks that after updating the instance; the dates differ in the
-        updated_at attribute.
-        """
-        old_update = self.my_model.updated_at
-        self.my_model.save()
-        self.assertNotEqual(self.my_model.updated_at, old_update)
-
-    def test_str_override(self):
-        """
-        Checks that the right message gets printed.
-        """
-        inst_id = self.my_model.id
-        string_output = str(self.my_model)
-        expected_output = f"[BaseModel] ({inst_id}) {{'name': 'Binita Rai', 'id': '{inst_id}', 'created_at': {repr(self.my_model.created_at)}, 'updated_at': {repr(self.my_model.updated_at)}}}"
-        self.assertEqual(string_output, expected_output)
-
-    def test_to_dict_type(self):
-        """
-        Checks that the to_dict method return type.
-        """
-        self.assertEqual("<class 'dict'>",
-                         str(type(self.my_model.to_dict())))
-
-    def test_to_dict_class(self):
-        """
-        Checks that the __class__ key exists.
-        """
-        self.assertEqual("BaseModel", (self.my_model.to_dict())["__class__"])
-
-    def test_to_dict_type_updated_at(self):
-        """
-        Checks the type of the value of updated_at.
-        """
-        self.assertEqual("<class 'str'>",
-                         str(type((self.my_model.to_dict())["updated_at"])))
-
-    def test_to_dict_type_created_at(self):
-        """
-        Checks the type of the value of created_at.
-        """
-        tmp = self.my_model.to_dict()
-        self.assertEqual("<class 'str'>", str(type(tmp["created_at"])))
-
-    def test_kwargs_instantiation(self):
-        """
-        Test that an instance is created using the
-        key value pair.
-        """
-        my_model_dict = self.my_model.to_dict()
-        new_model = BaseModel(**my_model_dict)
-        self.assertEqual(new_model.id, self.my_model.id)
-
-    def test_type_created_at(self):
-        """
-        Test that the new_model's updated_at
-        data type is datetime.
-        """
-        my_model_dict = self.my_model.to_dict()
-        new_model = BaseModel(my_model_dict)
-        self.assertTrue(isinstance(new_model.created_at, datetime.datetime))
-
-    def test_type_updated_at(self):
-        """
-        Test that the new_model's created_at
-        data type is datetime.
-        """
-        my_model_dict = self.my_model.to_dict()
-        new_model = BaseModel(my_model_dict)
-        self.assertTrue(isinstance(new_model.updated_at, datetime.datetime))
-
-    def test_compare_dict(self):
-        """
-        Test that the new_model's and my_model's
-        dictionary values are the same.
-        """
-        my_model_dict = self.my_model.to_dict()
-        new_model = BaseModel(**my_model_dict)
-        new_model_dict = new_model.to_dict()
-        self.assertEqual(my_model_dict, new_model_dict)
-
-if __name__ == "__main__":
-    unittest.main()
-
+        new_state = State()
+        name = getattr(new_state, "name")
+        self.assertIsInstance(name, str)
